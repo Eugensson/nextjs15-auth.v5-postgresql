@@ -1,1 +1,0 @@
-# nextjs15-auth.v5-postgresql
