@@ -17,8 +17,8 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: "Auth(v5)-Postgresql",
-    template: "%s | Auth(v5)-Postgresql",
+    default: "Auth(v5)-PostgreSQL",
+    template: "%s | Auth(v5)-PostgreSQL",
   },
   description:
     "Secure authentication app built with PostgreSQL. Features include user registration, login, email verification, Google and GitHub social sign-in, password reset, two-factor authentication, and profile management.",
