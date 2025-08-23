@@ -3,7 +3,7 @@ import { LoginButton } from "@/components/auth/login-button";
 
 const Home = () => {
   return (
-    <div className="space-y-6 text-center">
+    <div className="h-full flex flex-col items-center justify-center space-y-6 text-center">
       <h1 className="text-6xl font-secondary font-semibold text-white drop-shadow-md">
         🔐Auth
       </h1>

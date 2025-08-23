@@ -42,11 +42,11 @@ export const LoginForm = () => {
     startTransition(() =>
       login(values)
         .then((data) => {
-          if (data.error) {
+          if (data?.error) {
             setError(data.error);
           }
 
-          if (data.success) {
+          if (data?.success) {
             form.reset();
             setSuccess(data.success);
           }
@@ -71,7 +71,7 @@ export const LoginForm = () => {
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem>
+                <FormItem id="email">
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
@@ -90,7 +90,7 @@ export const LoginForm = () => {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem>
+                <FormItem id="password">
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input

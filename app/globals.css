@@ -123,6 +123,6 @@ body,
     @apply border-border outline-ring/50;
   }
   body {
-    @apply h-screen flex flex-col items-center justify-center bg-radial-[at_top] from-sky-400 to-blue-800 text-foreground font-primary overflow-x-hidden;
+    @apply h-screen bg-radial-[at_top] from-sky-400 to-blue-800 text-foreground font-primary overflow-x-hidden;
   }
 }
