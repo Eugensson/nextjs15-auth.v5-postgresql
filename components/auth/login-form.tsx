@@ -1,6 +1,7 @@
 "use client";
 
 import * as z from "zod";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
@@ -15,11 +16,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { CardWrapper } from "@/components/auth/card-wrapper";
+import { Button, buttonVariants } from "@/components/ui/button";
 
+import { cn } from "@/lib/utils";
 import { loginSchema } from "@/schemas";
 import { login } from "@/actions/login";
 
@@ -27,7 +29,6 @@ export const LoginForm = () => {
   const [isLoading, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
-
   const searchParams = useSearchParams();
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
@@ -108,6 +109,18 @@ export const LoginForm = () => {
                       disabled={isLoading}
                     />
                   </FormControl>
+                  <Link
+                    href="/auth/reset"
+                    className={cn(
+                      buttonVariants({
+                        size: "sm",
+                        variant: "link",
+                      }),
+                      "px-0 w-fit font-normal justify-start"
+                    )}
+                  >
+                    Forgot password?
+                  </Link>
                   <FormMessage />
                 </FormItem>
               )}
