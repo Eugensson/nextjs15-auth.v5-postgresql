@@ -15,6 +15,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { Input } from "@/components/ui/input";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
@@ -29,6 +34,7 @@ export const LoginForm = () => {
   const [isLoading, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
+  const [showTwoFactor, setShowTwoFactor] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
@@ -51,16 +57,19 @@ export const LoginForm = () => {
       login(values)
         .then((data) => {
           if (data?.error) {
+            form.reset();
             setError(data.error);
           }
-
           if (data?.success) {
             form.reset();
             setSuccess(data.success);
           }
+          if (data?.twoFactor) {
+            setShowTwoFactor(true);
+          }
         })
         .catch(() => {
-          setError("Something went wrong. Please try again.");
+          setError("Something went wrong!");
         })
     );
   };
@@ -75,67 +84,114 @@ export const LoginForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem id="email">
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="john.doe@example.com"
-                      type="email"
-                      autoComplete="off"
-                      disabled={isLoading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem id="password">
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="******"
-                      type="password"
-                      autoComplete="off"
-                      disabled={isLoading}
-                    />
-                  </FormControl>
-                  <Link
-                    href="/auth/reset"
-                    className={cn(
-                      buttonVariants({
-                        size: "sm",
-                        variant: "link",
-                      }),
-                      "px-0 w-fit font-normal justify-start"
-                    )}
-                  >
-                    Forgot password?
-                  </Link>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {showTwoFactor && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="code"
+                  render={({ field }) => (
+                    <FormItem id="code">
+                      <FormLabel className="mb-4">Two Factor Code</FormLabel>
+                      <FormControl>
+                        <InputOTP
+                          maxLength={6}
+                          value={field.value ?? ""}
+                          onChange={field.onChange}
+                          disabled={isLoading}
+                        >
+                          <InputOTPGroup className="space-x-4 mx-auto">
+                            <InputOTPSlot index={0} />
+                            <InputOTPSlot index={1} />
+                            <InputOTPSlot index={2} />
+                            <InputOTPSlot index={3} />
+                            <InputOTPSlot index={4} />
+                            <InputOTPSlot index={5} />
+                          </InputOTPGroup>
+                        </InputOTP>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+            {!showTwoFactor && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem id="email">
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="john.doe@example.com"
+                          type="email"
+                          autoComplete="off"
+                          disabled={isLoading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem id="password">
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="******"
+                          type="password"
+                          autoComplete="off"
+                          disabled={isLoading}
+                        />
+                      </FormControl>
+                      <Link
+                        href="/auth/reset"
+                        className={cn(
+                          buttonVariants({
+                            size: "sm",
+                            variant: "link",
+                          }),
+                          "px-0 w-fit font-normal justify-start"
+                        )}
+                      >
+                        Forgot password?
+                      </Link>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
           </div>
           <FormError message={error || urlError} />
           <FormSuccess message={success} />
-          <Button
-            type="submit"
-            size="lg"
-            className="w-full"
-            disabled={isLoading}
-          >
-            {isLoading ? "Logging in..." : "Login"}
-          </Button>
+          {!showTwoFactor && (
+            <Button
+              type="submit"
+              size="lg"
+              className="w-full"
+              disabled={isLoading}
+            >
+              {isLoading ? "Logging in..." : "Login"}
+            </Button>
+          )}
+          {showTwoFactor && (
+            <Button
+              type="submit"
+              size="lg"
+              className="w-full"
+              disabled={isLoading}
+            >
+              {isLoading ? "Confirming..." : "Confirm"}
+            </Button>
+          )}
         </form>
       </Form>
     </CardWrapper>

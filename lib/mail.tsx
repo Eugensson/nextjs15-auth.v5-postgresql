@@ -1,7 +1,11 @@
 import nodemailer from "nodemailer";
 import { render } from "@react-email/render";
 
-import { VerificationEmail, PasswordResetEmail } from "@/data/emails";
+import {
+  VerificationEmail,
+  PasswordResetEmail,
+  TwoFactorEmail,
+} from "@/data/emails";
 
 const domain = process.env.NEXT_PUBLIC_APP_URL;
 const pass = process.env.NODEMAILER_SENDER_PASSWORD;
@@ -41,6 +45,24 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
       from: emailSender,
       to: email,
       subject: "Reset your password",
+      html,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const sendTwoFactorTokensEmail = async (
+  email: string,
+  token: string
+) => {
+  const html = await render(<TwoFactorEmail code={token} />);
+
+  try {
+    await transporter.sendMail({
+      from: emailSender,
+      to: email,
+      subject: "2FA Code",
       html,
     });
   } catch (error) {
