@@ -6,12 +6,12 @@ import { FaGithub } from "react-icons/fa";
 
 import { Button } from "@/components/ui/button";
 
-import { DEAFAULT_LOGIN_REDIRECT } from "@/routes";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 export const Social = () => {
   const onClick = (provider: "google" | "github") => {
     signIn(provider, {
-      callbackUrl: DEAFAULT_LOGIN_REDIRECT,
+      callbackUrl: DEFAULT_LOGIN_REDIRECT,
     });
   };
 

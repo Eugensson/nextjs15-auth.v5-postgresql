@@ -39,7 +39,7 @@ const AdminPage = () => {
       <CardHeader>
         <h2 className="flex items-center justify-center gap-x-2 text-2xl font-semibold">
           <MdAdminPanelSettings size={28} />
-          Admin Page
+          Admin page
         </h2>
       </CardHeader>
       <CardContent className="space-y-4">

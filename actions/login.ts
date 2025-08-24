@@ -11,12 +11,15 @@ import { db } from "@/lib/db";
 import { signIn } from "@/auth";
 import { loginSchema } from "@/schemas";
 import { getUserByEmail } from "@/data/user";
-import { DEAFAULT_LOGIN_REDIRECT } from "@/routes";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
 import { sendTwoFactorTokensEmail, sendVerificationEmail } from "@/lib/mail";
 import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
 
-export const login = async (values: z.infer<typeof loginSchema>) => {
+export const login = async (
+  values: z.infer<typeof loginSchema>,
+  callbackUrl?: string | null
+) => {
   const validatedFields = loginSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -93,7 +96,7 @@ export const login = async (values: z.infer<typeof loginSchema>) => {
     await signIn("credentials", {
       email,
       password,
-      redirectTo: DEAFAULT_LOGIN_REDIRECT,
+      redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
     });
     return { success: "You have been logged in!" };
   } catch (error) {
