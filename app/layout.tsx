@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { Toaster } from "@/components/ui/sonner";
 import { Inter, Poppins } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
+import { Analytics } from "@vercel/analytics/next";
+
+import { Toaster } from "@/components/ui/sonner";
 
 import { auth } from "@/auth";
 
@@ -41,6 +43,7 @@ export default async function RootLayout({
         <body className={`${inter.variable} ${poppins.variable} antialiased`}>
           {children}
           <Toaster />
+          <Analytics />
         </body>
       </html>
     </SessionProvider>
