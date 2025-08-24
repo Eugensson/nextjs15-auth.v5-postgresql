@@ -1,14 +1,14 @@
+import { Metadata } from "next";
 import { Suspense } from "react";
-import type { Metadata } from "next";
 import { BeatLoader } from "react-spinners";
 
-import { LoginForm } from "@/components/auth/login-form";
+import { NewVerificationForm } from "@/components/auth/new-verification-form";
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "New Verification",
 };
 
-const LoginPage = () => {
+const NewVerificationPage = () => {
   return (
     <Suspense
       fallback={
@@ -17,9 +17,9 @@ const LoginPage = () => {
         </div>
       }
     >
-      <LoginForm />
+      <NewVerificationForm />
     </Suspense>
   );
 };
 
-export default LoginPage;
+export default NewVerificationPage;
