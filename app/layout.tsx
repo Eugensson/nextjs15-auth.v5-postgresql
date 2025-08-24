@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
+import { Toaster } from "@/components/ui/sonner";
 import { Inter, Poppins } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
+
+import { auth } from "@/auth";
 
 import "./globals.css";
 
@@ -24,16 +28,21 @@ export const metadata: Metadata = {
     "Secure authentication app built with PostgreSQL. Features include user registration, login, email verification, Google and GitHub social sign-in, password reset, two-factor authentication, and profile management.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${poppins.variable} antialiased`}>
-        {children}
-      </body>
-    </html>
+    <SessionProvider session={session}>
+      <html lang="en">
+        <body className={`${inter.variable} ${poppins.variable} antialiased`}>
+          {children}
+          <Toaster />
+        </body>
+      </html>
+    </SessionProvider>
   );
 }

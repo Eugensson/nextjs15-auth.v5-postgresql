@@ -69,7 +69,7 @@ export const LoginForm = () => {
           }
         })
         .catch(() => {
-          setError("Something went wrong!");
+          setError("");
         })
     );
   };
